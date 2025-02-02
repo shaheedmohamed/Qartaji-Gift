@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qartaji Gift</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="icon" type="image/png" href="image.png">
+
     <style>
         * {
             margin: 0;
@@ -102,6 +104,14 @@
             font-weight: bold;
             border-radius: 8px;
         }
+
+        /* عدد الزوار */
+        .visitor-count {
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
     </style>
 </head>
 
@@ -109,8 +119,12 @@
 
     <div class="popup">
         <h1><i class="bi bi-gift"></i></h1><br>
-        <h2>فرصتك لتحصل على خصم 10 دنانير على اول عمليه شراء لك <br></h2>
-        <h3>قم بمشاركه الرابط مع 100 من اصدقائك</h3><br>
+        <h2>فرصتك لتحصل على خصم 10 دنانير على أول عملية شراء لك</h2>
+        <h3>قم بمشاركة الرابط مع 100 من أصدقائك</h3><br>
+
+        <!-- عدد الأشخاص الذين دخلوا على الرابط -->
+        <div class="visitor-count">👥 عدد الزوار: <span id="visitorCounter">0</span></div><br>
+
         <input type="text" id="shareUrl" readonly>
         <div class="btn-container">
             <button class="btn-copy" onclick="copyLink()">📋 نسخ الرابط</button>
@@ -132,7 +146,11 @@
             visitorCount++;
             localStorage.setItem("visitorCount", visitorCount);
 
-            if (visitorCount >= 100 ) {
+            // تحديث عدد الزوار في الصفحة
+            document.getElementById("visitorCounter").textContent = visitorCount;
+
+            // عرض الكود إذا وصل لـ 100 زيارة
+            if (visitorCount >= 100) {
                 document.getElementById("rewardMessage").style.display = "block";
             }
         }
@@ -154,11 +172,13 @@
             }
         }
 
-
         // تعيين الرابط الحالي في حقل الإدخال عند تحميل الصفحة
         document.getElementById("shareUrl").value = 'qartaji.net';
 
-        // تحديث عدد الزوار
+        // تحديث عدد الزوار عند تحميل الصفحة
+        document.getElementById("visitorCounter").textContent = localStorage.getItem("visitorCount") || 0;
+        
+        // زيادة عدد الزوار عند تحميل الصفحة
         incrementVisitorCount();
     </script>
 

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qartaji Gift</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Arial", sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #FFB13E, #EA4E37);
+        }
+
+        .popup {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            width: 350px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .popup h2 {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .popup input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            text-align: center;
+            transition: 0.3s ease-in-out;
+        }
+
+        .popup input:focus {
+            border-color: #EA4E37;
+            outline: none;
+        }
+
+        .popup .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .popup button {
+            flex: 1;
+            padding: 10px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+            color: white;
+        }
+
+        /* زر النسخ */
+        .btn-copy {
+            background: #FFB13E;
+        }
+
+        .btn-copy:hover {
+            background: #E89B32;
+        }
+
+        /* زر المشاركة */
+        .btn-share {
+            background: #EA4E37;
+        }
+
+        .btn-share:hover {
+            background: #D03D2C;
+        }
+
+        /* مكافأة الكود */
+        .reward {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background: #FFEE8A;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="popup">
+        <h1><i class="bi bi-gift"></i></h1><br>
+        <h2>فرصتك لتحصل على خصم 10 دنانير على اول عمليه شراء لك <br></h2>
+        <h3>قم بمشاركه الرابط مع 100 من اصدقائك</h3><br>
+        <input type="text" id="shareUrl" readonly>
+        <div class="btn-container">
+            <button class="btn-copy" onclick="copyLink()">📋 نسخ الرابط</button>
+            <button class="btn-share" onclick="shareLink()">🔗 مشاركة</button>
+        </div>
+        <div id="rewardMessage" class="reward">🎉 كود الخصم هو : <b>1345</b></div>
+    </div>
+
+    <script>
+        function incrementVisitorCount() {
+            let visitorCount = localStorage.getItem("visitorCount");
+
+            if (!visitorCount) {
+                visitorCount = 0;
+            } else {
+                visitorCount = parseInt(visitorCount);
+            }
+
+            visitorCount++;
+            localStorage.setItem("visitorCount", visitorCount);
+
+            if (visitorCount >= 100 ) {
+                document.getElementById("rewardMessage").style.display = "block";
+            }
+        }
+
+        function copyLink() {
+            const link = document.getElementById("shareUrl");
+            link.select();
+            document.execCommand("copy");
+            alert("✅ تم نسخ الرابط!");
+        }
+
+        function shareLink() {
+            if (navigator.share) {
+                navigator.share({
+                    url: 'https://qartaji.net' // مشاركة الرابط فقط
+                }).catch((error) => console.error("خطأ أثناء المشاركة:", error));
+            } else {
+                alert("❌ المشاركة غير مدعومة في هذا المتصفح!");
+            }
+        }
+
+
+        // تعيين الرابط الحالي في حقل الإدخال عند تحميل الصفحة
+        document.getElementById("shareUrl").value = 'qartaji.net';
+
+        // تحديث عدد الزوار
+        incrementVisitorCount();
+    </script>
+
+</body>
+
+</html>

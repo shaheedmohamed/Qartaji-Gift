@@ -7,7 +7,6 @@
     <title>Qartaji Gift</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="icon" type="image/png" href="image.png">
-
     <style>
         * {
             margin: 0;
@@ -22,6 +21,7 @@
             align-items: center;
             height: 100vh;
             background: linear-gradient(135deg, #FFB13E, #EA4E37);
+            overflow: hidden;
         }
 
         .popup {
@@ -32,6 +32,8 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             width: 350px;
             animation: fadeIn 0.3s ease-in-out;
+            position: relative;
+            z-index: 10;
         }
 
         .popup h2 {
@@ -56,7 +58,7 @@
             outline: none;
         }
 
-        .popup .btn-container {
+        .btn-container {
             display: flex;
             justify-content: space-between;
             margin-top: 15px;
@@ -75,7 +77,6 @@
             color: white;
         }
 
-        /* زر النسخ */
         .btn-copy {
             background: #FFB13E;
         }
@@ -84,7 +85,6 @@
             background: #E89B32;
         }
 
-        /* زر المشاركة */
         .btn-share {
             background: #EA4E37;
         }
@@ -93,7 +93,6 @@
             background: #D03D2C;
         }
 
-        /* مكافأة الكود */
         .reward {
             display: none;
             margin-top: 15px;
@@ -104,11 +103,29 @@
             font-weight: bold;
             border-radius: 8px;
         }
+
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 50px;
+            height: 70px;
+            background: red;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: float 5s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-120vh);
+            }
+        }
     </style>
 </head>
 
 <body>
-
     <div class="popup">
         <h1><i class="bi bi-gift"></i></h1><br>
         <h2>فرصتك لتحصل على خصم 10 دنانير على اول عمليه شراء لك <br></h2>
@@ -120,22 +137,20 @@
         </div>
         <div id="rewardMessage" class="reward">🎉 كود الخصم هو : <b>1345</b></div>
     </div>
-
+    
     <script>
         function incrementVisitorCount() {
             let visitorCount = localStorage.getItem("visitorCount");
-
             if (!visitorCount) {
                 visitorCount = 0;
             } else {
                 visitorCount = parseInt(visitorCount);
             }
-
             visitorCount++;
             localStorage.setItem("visitorCount", visitorCount);
-
-            if (visitorCount >= 100 ) {
+            if (visitorCount >= 100) {
                 document.getElementById("rewardMessage").style.display = "block";
+                launchCelebration();
             }
         }
 
@@ -149,21 +164,29 @@
         function shareLink() {
             if (navigator.share) {
                 navigator.share({
-                    url: 'https://qartaji.net' // مشاركة الرابط فقط
+                    url: 'https://qartaji.net'
                 }).catch((error) => console.error("خطأ أثناء المشاركة:", error));
             } else {
                 alert("❌ المشاركة غير مدعومة في هذا المتصفح!");
             }
         }
 
+        function launchCelebration() {
+            for (let i = 0; i < 30; i++) {
+                let balloon = document.createElement("div");
+                balloon.classList.add("balloon");
+                balloon.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                balloon.style.left = `${Math.random() * 100}vw`;
+                balloon.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(balloon);
+                setTimeout(() => {
+                    balloon.remove();
+                }, 5000);
+            }
+        }
 
-        // تعيين الرابط الحالي في حقل الإدخال عند تحميل الصفحة
         document.getElementById("shareUrl").value = 'qartaji.net';
-
-        // تحديث عدد الزوار
         incrementVisitorCount();
     </script>
-
 </body>
-
 </html>
